@@ -6,13 +6,13 @@ import io.github.mooy1.infinitylib.core.AddonConfig;
 import io.github.seggan.slimefunwarfare.SlimefunWarfare;
 import io.github.seggan.slimefunwarfare.lists.Categories;
 import io.github.seggan.slimefunwarfare.lists.Items;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
+import com.github.drakescraft_labs.slimefun4.core.handlers.BlockUseHandler;
+import com.github.drakescraft_labs.slimefun4.implementation.Slimefun;
+import com.github.drakescraft_labs.slimefun4.implementation.items.SimpleSlimefunItem;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.protection.Interaction;
+import com.github.drakescraft_labs.slimefun4.legacy.api.BlockStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -40,7 +40,7 @@ public class MeteorAttractor extends SimpleSlimefunItem<BlockUseHandler> {
 
     private void drop(Location l, Player p) {
         Block b = l.getBlock();
-        if (!Slimefun.getProtectionManager().hasPermission(p, b, Interaction.BREAK_BLOCK)) return;
+        if (!SlimefunWarfare.inst().guard().canModify(p, l)) return;
 
         AddonConfig config = SlimefunWarfare.inst().getConfig();
 
@@ -50,7 +50,9 @@ public class MeteorAttractor extends SimpleSlimefunItem<BlockUseHandler> {
         int z = ThreadLocalRandom.current().nextInt(b.getZ() - radius, b.getZ() + radius + 1);
         World world = b.getWorld();
 
-        world.createExplosion(x, world.getHighestBlockYAt(x, z), z, 4);
+        Location impact = new Location(world, x, world.getHighestBlockYAt(x, z), z);
+        if (!SlimefunWarfare.inst().guard().canModify(p, impact)) return;
+        world.createExplosion(impact, 4F, false, false);
 
         Scheduler.run(2, () -> {
             SlimefunItemStack stack = Items.OSMIUM_METEOR;
@@ -71,6 +73,7 @@ public class MeteorAttractor extends SimpleSlimefunItem<BlockUseHandler> {
     @Override
     public BlockUseHandler getItemHandler() {
         return (b) -> {
+            if (!SlimefunWarfare.inst().guard().allowUse(b.getPlayer())) return;
             AddonConfig config = SlimefunWarfare.inst().getConfig();
             if (cooldowns.checkAndReset(b.getPlayer().getUniqueId())) {
                 int mins = ThreadLocalRandom.current().nextInt(
@@ -79,12 +82,12 @@ public class MeteorAttractor extends SimpleSlimefunItem<BlockUseHandler> {
                 );
 
                 Location l = b.getClickedBlock().get().getLocation();
-                b.getPlayer().sendMessage("流星将在" + mins + "分钟内坠落");
+                b.getPlayer().sendMessage("Meteoro estará en" + mins + "Caer en minutos");
                 Scheduler.run(mins * 60 * 20, () -> drop(l, b.getPlayer()));
             } else {
-                b.getPlayer().sendMessage(ChatColor.RED + "流星吸引器有"
+                b.getPlayer().sendMessage(ChatColor.RED + "El atractor de meteoritos tiene"
                     + config.getInt("space.space.attractor-cooldown", 1) +
-                    "分钟的冷却时间"
+                    "minutos de tiempo de enfriamiento"
                 );
             }
         };

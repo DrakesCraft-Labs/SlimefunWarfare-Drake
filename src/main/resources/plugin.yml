@@ -1,13 +1,12 @@
 name: SlimefunWarfare
 main: io.github.seggan.slimefunwarfare.SlimefunWarfare
 version: ${version}
-author: Seggan
+authors: [Seggan, Jack]
 depend:
   - Slimefun
 softdepend:
-  - GuizhanLibPlugin
   - SimpleStorage
   - InfinityExpansion
   - DynaTech
   - TownyFlight
-api-version: 1.16
+api-version: '1.21'

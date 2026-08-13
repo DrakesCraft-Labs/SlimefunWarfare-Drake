@@ -5,14 +5,14 @@ import io.github.seggan.slimefunwarfare.SlimefunWarfare;
 import io.github.seggan.slimefunwarfare.Util;
 import io.github.seggan.slimefunwarfare.items.Bullet;
 import io.github.seggan.slimefunwarfare.lists.Categories;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.player.PlayerProfile;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.core.attributes.DamageableItem;
-import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.items.backpacks.SlimefunBackpack;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.player.PlayerProfile;
+import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
+import com.github.drakescraft_labs.slimefun4.core.attributes.DamageableItem;
+import com.github.drakescraft_labs.slimefun4.core.handlers.ItemUseHandler;
+import com.github.drakescraft_labs.slimefun4.implementation.items.backpacks.SlimefunBackpack;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.items.ItemUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.LlamaSpit;
@@ -68,6 +68,7 @@ public class Gun extends SlimefunItem implements DamageableItem {
         return e -> {
             e.cancel();
             Player p = e.getPlayer();
+            if (!SlimefunWarfare.inst().guard().allowUse(p)) return;
             ItemStack gun = p.getInventory().getItemInMainHand();
             if (!(SlimefunItem.getByItem(gun) instanceof Gun)) {
                 return;
@@ -78,7 +79,7 @@ public class Gun extends SlimefunItem implements DamageableItem {
             long lastUse = container.getOrDefault(Gun.LAST_USE, PersistentDataType.LONG, 0L);
             long currentTime = System.currentTimeMillis();
             if ((currentTime - lastUse) < cooldown) {
-                p.sendMessage(ChatColor.RED + "换弹中!");
+                p.sendMessage(ChatColor.RED + "Recargar!");
                 return;
             }
             container.set(LAST_USE, PersistentDataType.LONG, currentTime);
@@ -88,6 +89,7 @@ public class Gun extends SlimefunItem implements DamageableItem {
     }
 
     public void shoot(@Nonnull Player p, @Nonnull ItemStack gun) {
+        if (!SlimefunWarfare.inst().guard().allowUse(p)) return;
         PlayerInventory inv = p.getInventory();
 
         Bullet bullet = checkAndConsume(inv.getItemInOffHand());
@@ -98,7 +100,7 @@ public class Gun extends SlimefunItem implements DamageableItem {
             }
 
             if (bullet == null) {
-                p.sendMessage(ChatColor.RED + "子弹耗尽!");
+                p.sendMessage(ChatColor.RED + "Sin balas!");
                 return;
             }
         }

@@ -1,11 +1,12 @@
 package io.github.seggan.slimefunwarfare.listeners;
 
+import io.github.seggan.slimefunwarfare.SlimefunWarfare;
 import io.github.seggan.slimefunwarfare.items.Dummy;
 import io.github.seggan.slimefunwarfare.items.EnergyBlade;
 import io.github.seggan.slimefunwarfare.lists.Items;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.common.ChatColors;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.common.ChatColors;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.data.persistent.PersistentDataAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Entity;
@@ -25,9 +26,14 @@ public class HitListener implements Listener {
         Entity entity = e.getDamager();
         if (!(entity instanceof Player)) return;
 
-        ItemStack item = ((Player) entity).getInventory().getItemInMainHand();
+        Player player = (Player) entity;
+        ItemStack item = player.getInventory().getItemInMainHand();
         SlimefunItem slimefunItem = SlimefunItem.getByItem(item);
         if (slimefunItem instanceof EnergyBlade) {
+            if (!SlimefunWarfare.inst().guard().canAttack(player, e.getEntity())) {
+                e.setCancelled(true);
+                return;
+            }
             EnergyBlade blade = (EnergyBlade) slimefunItem;
             float charge = blade.getItemCharge(item);
 
@@ -49,7 +55,7 @@ public class HitListener implements Listener {
             e.setCancelled(true);
             Player p = (Player) e.getDamager();
             p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColors.color(
-                String.format("&c你对假人造成了 %d 点伤害", Math.round(e.getFinalDamage()))
+                String.format("&cSe lo hiciste al muñeco. %d daño", Math.round(e.getFinalDamage()))
             )));
         }
     }

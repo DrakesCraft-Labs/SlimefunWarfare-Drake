@@ -1,7 +1,7 @@
 package io.github.seggan.slimefunwarfare.lists;
 
 import io.github.mooy1.infinitylib.core.AbstractAddon;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
 
 import lombok.experimental.UtilityClass;
 
@@ -11,8 +11,8 @@ public final class RecipeTypes {
     public static final RecipeType ELEMENT_FORGE = new RecipeType(
         AbstractAddon.createKey("element_forge"),
         Items.ELEMENT_FORGE,
-        "&c元素锻造台",
-        "&7用来创建新的元素"
+        "&cForja elemental",
+        "&7Se utiliza para crear nuevos elementos."
     );
 
     public static final RecipeType AIR_LIQUEFIER = new RecipeType(

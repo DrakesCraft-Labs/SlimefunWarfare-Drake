@@ -1,7 +1,7 @@
 package io.github.seggan.slimefunwarfare.listeners;
 
 import io.github.seggan.slimefunwarfare.SlimefunWarfare;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import com.github.drakescraft_labs.slimefun4.legacy.api.BlockStorage;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -47,7 +47,7 @@ public class ConcreteListener implements Listener {
             e.setCancelled(true);
             EXPLOSIONS.add(e.getLocation());
             entity.getWorld().createExplosion(e.getLocation(), entity.getMetadata("rad").get(0).asFloat(),
-                true);
+                false, false);
         } else {
             Random random = ThreadLocalRandom.current();
             int percentChance = SlimefunWarfare.inst().getConfig().getInt("explosions.concrete-explode-chance", 1, 100);

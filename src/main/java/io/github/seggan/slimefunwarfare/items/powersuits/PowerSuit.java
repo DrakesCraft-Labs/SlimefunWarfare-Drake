@@ -2,13 +2,12 @@ package io.github.seggan.slimefunwarfare.items.powersuits;
 
 import io.github.mooy1.infinitylib.core.AbstractAddon;
 import io.github.seggan.slimefunwarfare.lists.Categories;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.core.attributes.ProtectionType;
-import io.github.thebusybiscuit.slimefun4.core.attributes.ProtectiveArmor;
-import io.github.thebusybiscuit.slimefun4.core.attributes.Rechargeable;
-import org.apache.commons.lang.ArrayUtils;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
+import com.github.drakescraft_labs.slimefun4.core.attributes.ProtectionType;
+import com.github.drakescraft_labs.slimefun4.core.attributes.ProtectiveArmor;
+import com.github.drakescraft_labs.slimefun4.core.attributes.Rechargeable;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -50,7 +49,9 @@ public class PowerSuit extends SlimefunItem implements ProtectiveArmor, Recharge
     public static void addModule(@Nonnull ItemStack stack, @Nonnull Module module) {
         ItemMeta meta = stack.getItemMeta();
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        Module[] newArr = (Module[]) ArrayUtils.add(container.getOrDefault(MODULES, PersistentModuleArray.TYPE, new Module[0]), module);
+        Module[] current = container.getOrDefault(MODULES, PersistentModuleArray.TYPE, new Module[0]);
+        Module[] newArr = Arrays.copyOf(current, current.length + 1);
+        newArr[current.length] = module;
         container.set(MODULES, PersistentModuleArray.TYPE, newArr);
         stack.setItemMeta(meta);
     }

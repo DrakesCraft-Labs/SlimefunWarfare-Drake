@@ -1,7 +1,8 @@
 package io.github.seggan.slimefunwarfare.listeners;
 
+import io.github.seggan.slimefunwarfare.SlimefunWarfare;
 import io.github.seggan.slimefunwarfare.lists.Items;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -14,7 +15,7 @@ public class PyroListener implements Listener {
 
     @EventHandler
     public void onPyroPowderCombust(EntityCombustByBlockEvent e) {
-        if (e.getEntityType() != EntityType.DROPPED_ITEM) {
+        if (e.getEntityType() != EntityType.ITEM) {
             return;
         }
         Entity entity = e.getEntity();
@@ -24,7 +25,8 @@ public class PyroListener implements Listener {
             return;
         }
         if (sfItem.getItem().equals(Items.PYRO_POWDER)) {
-            entity.getWorld().createExplosion(entity.getLocation(), 3F);
+            if (!SlimefunWarfare.inst().guard().isAllowed(entity.getLocation())) return;
+            entity.getWorld().createExplosion(entity.getLocation(), 3F, false, false);
         }
     }
 }

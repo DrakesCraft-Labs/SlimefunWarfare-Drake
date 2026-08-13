@@ -1,18 +1,48 @@
-# SlimefunWarfare 战争工艺
+<p align="center"><img src="assets/banner.svg" alt="SlimefunWarfare banner" width="100%"></p>
 
-这是一个 Slimefun 附属插件，添加了战争有关的物品。
+# SlimefunWarfare for DrakesCraft
 
-## 下载
+[![Build](https://github.com/DrakesCraft-Labs/SlimefunWarfare-Drake/actions/workflows/build.yml/badge.svg)](https://github.com/DrakesCraft-Labs/SlimefunWarfare-Drake/actions/workflows/build.yml)
+![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11-62b47a)
+![Java](https://img.shields.io/badge/Java-21-e8c65b)
 
-**自动更新**: 汉化版构建#2及以上版本包含自动更新功能，默认开启。
+A maintained, production-hardened port of SlimefunWarfare for the Drake Slimefun core. It adds
+military technology, rare-earth processing, chemical weapons and modular powered armor without
+allowing those systems to bypass DrakesCraft's modality or protection boundaries.
 
-点击这里下载 SlimefunWarfare: [下载 SlimefunWarfare](https://builds.guizhanss.net/ybw0014/SlimefunWarfare-CN/master)
+## Highlights
 
-<p align="center">
-  <a href="https://github.com/ybw0014/SlimefunWarfare-CN/actions/workflows/maven.yml">
-    <img src="https://github.com/ybw0014/SlimefunWarfare-CN/actions/workflows/maven.yml/badge.svg" alt="Java CI"/>
-  </a>
-  <a href="https://builds.guizhanss.net/ybw0014/SlimefunWarfare-CN/master">
-    <img src="https://builds.guizhanss.net/f/ybw0014/SlimefunWarfare-CN/master/badge.svg" alt="Build status"/>
-  </a>
-</p>
+- Firearms, energy weapons, ammunition and chemical grenades.
+- Modular powered armor with movement, survival and defensive modules.
+- Rare-earth ores, advanced alloys, meteor technology and processing machines.
+- Stable original item IDs and recipes for data compatibility.
+- Native Drake-core API and Java 21 / Minecraft 1.21.11 support.
+- Explicit world allowlist and Slimefun protection checks.
+- Non-destructive explosions; nuclear activation disabled by default.
+- No external auto-updater and no GuizhanLib runtime dependency.
+
+The complete progression and system reference lives in [docs/CONTENT.md](docs/CONTENT.md).
+
+## Build
+
+```bash
+mvn --batch-mode clean verify
+```
+
+The production artifact is generated at `target/SlimefunWarfare.jar`.
+
+## Runtime requirements
+
+- Paper or Purpur 1.21.11
+- Java 21
+- Slimefun4-Drake `11.0-Drake-1.21.11-SNAPSHOT`
+
+Review `safety.allowed-worlds` before deployment. The default configuration permits only the
+three primary Slimefun dimensions and keeps every other modality isolated.
+
+## Credits
+
+Original concept and implementation by Seggan and upstream contributors. Drake maintenance,
+compatibility work, Spanish in-game presentation and production hardening by Jack / DrakesCraft Labs.
+
+This repository retains the original license in [LICENSE.txt](LICENSE.txt).

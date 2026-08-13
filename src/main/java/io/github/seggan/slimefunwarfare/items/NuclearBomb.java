@@ -1,14 +1,14 @@
 package io.github.seggan.slimefunwarfare.items;
 
 import io.github.seggan.slimefunwarfare.SlimefunWarfare;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.core.attributes.Radioactive;
-import io.github.thebusybiscuit.slimefun4.core.attributes.Radioactivity;
-import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
-import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import com.github.drakescraft_labs.slimefun4.api.items.ItemGroup;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
+import com.github.drakescraft_labs.slimefun4.core.attributes.Radioactive;
+import com.github.drakescraft_labs.slimefun4.core.attributes.Radioactivity;
+import com.github.drakescraft_labs.slimefun4.core.handlers.BlockUseHandler;
+import com.github.drakescraft_labs.slimefun4.legacy.api.BlockStorage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.TNTPrimed;
@@ -38,6 +38,11 @@ public class NuclearBomb extends SlimefunItem implements Radioactive {
                 return;
             }
             Block b = optionalBlock.get();
+            if (!SlimefunWarfare.inst().getConfig().getBoolean("explosions.nuclear-enabled", false)
+                    || !SlimefunWarfare.inst().guard().canModify(e.getPlayer(), b.getLocation())) {
+                e.getPlayer().sendMessage("§cLa bomba nuclear está desactivada o no puedes usarla aquí.");
+                return;
+            }
             b.setType(Material.AIR);
             TNTPrimed tnt = b.getWorld().spawn(b.getLocation().add(0.5, 0, 0.5), TNTPrimed.class);
             tnt.setFuseTicks(100);

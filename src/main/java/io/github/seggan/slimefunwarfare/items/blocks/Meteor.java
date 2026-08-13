@@ -3,9 +3,9 @@ package io.github.seggan.slimefunwarfare.items.blocks;
 import io.github.seggan.slimefunwarfare.lists.Categories;
 import io.github.seggan.slimefunwarfare.lists.Items;
 import io.github.seggan.slimefunwarfare.lists.RecipeTypes;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.core.handlers.BlockBreakHandler;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -30,7 +30,7 @@ public class Meteor extends SlimefunItem {
                     SlimefunItemStack stack = getItem().equals(Items.OSMIUM_METEOR) ? Items.OSMIUM_DUST : Items.SEGGANESSON;
 
                     drops.add(stack.clone());
-                    int fortune = itemStack.getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
+                    int fortune = itemStack.getEnchantmentLevel(Enchantment.FORTUNE);
                     if (fortune == 0) return;
 
                     for (int i = 0; i < fortune; i++) {

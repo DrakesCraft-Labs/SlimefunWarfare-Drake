@@ -2,9 +2,9 @@ package io.github.seggan.slimefunwarfare.listeners;
 
 import io.github.seggan.slimefunwarfare.SlimefunWarfare;
 import io.github.seggan.slimefunwarfare.Util;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.common.CommonPatterns;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
+import com.github.drakescraft_labs.slimefun4.implementation.Slimefun;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.common.CommonPatterns;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.protection.Interaction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -30,9 +30,13 @@ public class BulletListener implements Listener {
         if (bullet.hasMetadata("isGunBullet")) {
             if (bullet.getShooter() instanceof Player) {
                 Player shooter = (Player) bullet.getShooter();
-                if (!Slimefun.getProtectionManager().hasPermission(shooter, shot.getLocation(), Interaction.ATTACK_PLAYER)) {
+                if (!SlimefunWarfare.inst().guard().canAttack(shooter, shot)) {
+                    e.setCancelled(true);
                     return;
                 }
+            } else if (!SlimefunWarfare.inst().guard().isAllowed(shot.getLocation())) {
+                e.setCancelled(true);
+                return;
             }
             Location shooterLoc = Util.deserializeLocation(bullet.getMetadata("locInfo").get(0).asString());
             String[] split = CommonPatterns.COLON.split(bullet.getMetadata("rangeInfo").get(0).asString());
@@ -60,7 +64,7 @@ public class BulletListener implements Listener {
         if (!(entity instanceof ShulkerBullet) || b == null) return;
 
         if (e.getEntity().hasMetadata("isGunBullet") && SlimefunWarfare.inst().getConfig().getBoolean("guns.energy-rifle-explosions", false)) {
-            b.getWorld().createExplosion(b.getLocation(), 1F);
+            b.getWorld().createExplosion(b.getLocation(), 1F, false, false);
         }
     }
 }

@@ -2,7 +2,7 @@ package io.github.seggan.slimefunwarfare.listeners;
 
 import io.github.mooy1.infinitylib.common.Scheduler;
 import io.github.seggan.slimefunwarfare.items.Radio;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -29,7 +29,7 @@ public class ChatListener implements Listener {
     private void sync(AsyncPlayerChatEvent e, String key) {
         HoverEvent event = new HoverEvent(
             HoverEvent.Action.SHOW_TEXT,
-            new Text("该消息使用无线电发送")
+            new Text("El mensaje se envía por radio.")
         );
 
         // don't wanna show the key
@@ -43,7 +43,7 @@ public class ChatListener implements Listener {
                     p.spigot().sendMessage(new ComponentBuilder()
                         .event(event)
                         .color(ChatColor.BLUE)
-                        .append("[无线电消息] ")
+                        .append("[mensaje de radio] ")
                         .color(ChatColor.WHITE)
                         .append("<")
                         .append(e.getPlayer().getDisplayName())

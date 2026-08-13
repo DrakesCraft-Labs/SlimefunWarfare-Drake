@@ -4,7 +4,6 @@ import com.google.common.collect.Sets;
 import io.github.mooy1.infinitylib.common.Events;
 import io.github.mooy1.infinitylib.common.Scheduler;
 import io.github.mooy1.infinitylib.core.AbstractAddon;
-import io.github.mooy1.infinitylib.metrics.bukkit.Metrics;
 import io.github.seggan.slimefunwarfare.items.guns.Gun;
 import io.github.seggan.slimefunwarfare.items.powersuits.ArmorPiece;
 import io.github.seggan.slimefunwarfare.items.powersuits.Module;
@@ -20,11 +19,10 @@ import io.github.seggan.slimefunwarfare.listeners.NukeListener;
 import io.github.seggan.slimefunwarfare.listeners.PyroListener;
 import io.github.seggan.slimefunwarfare.lists.Categories;
 import io.github.seggan.slimefunwarfare.lists.Items;
-import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import net.guizhanss.guizhanlibplugin.updater.GuizhanUpdater;
+import com.github.drakescraft_labs.slimefun4.api.MinecraftVersion;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.implementation.Slimefun;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
@@ -52,6 +50,7 @@ import javax.annotation.Nonnull;
 public class SlimefunWarfare extends AbstractAddon implements Listener {
 
     private static SlimefunWarfare instance = null;
+    private WarfareGuard warfareGuard;
 
     private static final Set<UUID> flying = new HashSet<>();
 
@@ -59,25 +58,13 @@ public class SlimefunWarfare extends AbstractAddon implements Listener {
     private static Object townyFlightApi = null;
 
     public SlimefunWarfare() {
-        super("SlimefunGuguProject", "SlimefunWarfare", "master", "auto-update");
+        super("DrakesCraft-Labs", "SlimefunWarfare-Drake", "main", "auto-update");
     }
 
     @Override
     public void enable() {
         instance = this;
-
-        if (!getServer().getPluginManager().isPluginEnabled("GuizhanLibPlugin")) {
-            getLogger().log(Level.SEVERE, "本插件需要 鬼斩前置库插件(GuizhanLibPlugin) 才能运行!");
-            getLogger().log(Level.SEVERE, "从此处下载: https://50l.cc/gzlib");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-
-        new Metrics(this, 9227);
-
-        if (getConfig().getBoolean("auto-update") && getDescription().getVersion().startsWith("Build")) {
-            GuizhanUpdater.start(this, getFile(), "SlimefunGuguProject", "SlimefunWarfare", "master");
-        }
+        warfareGuard = new WarfareGuard(this);
 
         Events.registerListener(new BulletListener());
         Events.registerListener(new PyroListener());
@@ -102,8 +89,8 @@ public class SlimefunWarfare extends AbstractAddon implements Listener {
 
         Module.setup(this);
 
-        if (getJavaVersion() < 16) {
-            log(Level.WARNING, "你正在使用Java16以下的版本,请尽快使用Java16");
+        if (getJavaVersion() < 21) {
+            log(Level.SEVERE, "SlimefunWarfare requiere Java 21 o superior.");
         }
 
         try {
@@ -122,6 +109,9 @@ public class SlimefunWarfare extends AbstractAddon implements Listener {
             // Gun autoshoot task
             Scheduler.repeat(1, () -> {
                 for (Player p : getServer().getOnlinePlayers()) {
+                    if (!warfareGuard.isAllowed(p.getLocation())) {
+                        continue;
+                    }
                     if (p.isSneaking() && !p.isFlying()) {
                         ItemStack stack = p.getInventory().getItemInMainHand();
                         SlimefunItem item = SlimefunItem.getByItem(stack);
@@ -145,8 +135,12 @@ public class SlimefunWarfare extends AbstractAddon implements Listener {
         }
 
         Scheduler.repeat(20, () -> {
-            for (Player p : getServer().getOnlinePlayers()) {
-                PlayerInventory inv = p.getInventory();
+                for (Player p : getServer().getOnlinePlayers()) {
+                    if (!warfareGuard.isAllowed(p.getLocation())) {
+                        disableWarfareFlight(p);
+                        continue;
+                    }
+                    PlayerInventory inv = p.getInventory();
 
                 ItemStack head = inv.getHelmet();
                 Util.ifPowerSuit(head, suit -> process(head, PowerSuit.getModules(head), suit, p));
@@ -205,6 +199,7 @@ public class SlimefunWarfare extends AbstractAddon implements Listener {
     @EventHandler
     public void onPlayerJoin(@Nonnull PlayerJoinEvent e) {
         Player p = e.getPlayer();
+        if (!warfareGuard.isAllowed(p.getLocation())) return;
         ItemStack boots = p.getInventory().getBoots();
         if (p.getAllowFlight() && SlimefunItem.getByItem(boots) instanceof PowerSuit &&
             Sets.newHashSet(PowerSuit.getModules(boots)).contains(Module.MINI_JETS)) {
@@ -216,6 +211,13 @@ public class SlimefunWarfare extends AbstractAddon implements Listener {
     @EventHandler
     public void onPlayerLeave(@Nonnull PlayerQuitEvent e) {
         flying.remove(e.getPlayer().getUniqueId());
+    }
+
+    private static void disableWarfareFlight(Player player) {
+        if (!flying.remove(player.getUniqueId())) return;
+        player.setFlying(false);
+        player.setAllowFlight(false);
+        setForceAllowFlight(player, false);
     }
 
     private static void process(ItemStack stack, Module[] modules, PowerSuit suit, Player p) {
@@ -285,5 +287,9 @@ public class SlimefunWarfare extends AbstractAddon implements Listener {
 
     public static SlimefunWarfare inst() {
         return instance;
+    }
+
+    public WarfareGuard guard() {
+        return warfareGuard;
     }
 }

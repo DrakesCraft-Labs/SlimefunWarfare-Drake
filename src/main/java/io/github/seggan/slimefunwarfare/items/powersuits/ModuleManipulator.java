@@ -3,16 +3,16 @@ package io.github.seggan.slimefunwarfare.items.powersuits;
 import io.github.seggan.slimefunwarfare.lists.Categories;
 import io.github.seggan.slimefunwarfare.lists.Heads;
 import io.github.seggan.slimefunwarfare.lists.Items;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.protection.Interaction;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.skins.PlayerHead;
-import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
-import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
+import com.github.drakescraft_labs.slimefun4.implementation.Slimefun;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.items.CustomItemStack;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.protection.Interaction;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.skins.PlayerHead;
+import com.github.drakescraft_labs.slimefun4.utils.ChestMenuUtils;
+import com.github.drakescraft_labs.slimefun4.legacy.api.inventory.BlockMenu;
+import com.github.drakescraft_labs.slimefun4.legacy.api.inventory.BlockMenuPreset;
+import com.github.drakescraft_labs.slimefun4.legacy.api.item_transport.ItemTransportFlow;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -81,22 +81,22 @@ public class ModuleManipulator extends SlimefunItem {
 
         preset.addItem(INSTALL, new CustomItemStack(
             Material.REDSTONE,
-            "&f安装/卸载模组"
+            "&fInstalar/Desinstalar mod"
         ));
 
         preset.addItem(INSTALLED, new CustomItemStack(
             Material.BOOK,
-            "&f已安装模组 (点击刷新)"
+            "&fMod instalado (Haga clic para actualizar)"
         ));
 
         preset.addItem(SUIT_MARKER, new CustomItemStack(
             PlayerHead.getItemStack(Heads.SUIT_HELMET),
-            "&4在此处放入动力装甲"
+            "&4Poner servoarmadura aquí"
         ), ChestMenuUtils.getEmptyClickHandler());
 
         preset.addItem(MODULE_MARKER, new CustomItemStack(
             PlayerHead.getItemStack(Heads.MODULE),
-            "&6在此处放入模组"
+            "&6Pon mod aquí"
         ), ChestMenuUtils.getEmptyClickHandler());
     }
 

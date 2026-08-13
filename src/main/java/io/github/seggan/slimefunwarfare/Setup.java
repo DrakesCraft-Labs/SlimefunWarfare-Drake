@@ -29,15 +29,15 @@ import io.github.seggan.slimefunwarfare.machines.ElementalReactor;
 import io.github.seggan.slimefunwarfare.machines.ExplosiveSynthesizer;
 import io.github.seggan.slimefunwarfare.machines.IonExchangeSeparator;
 import io.github.seggan.slimefunwarfare.machines.MeteorAttractor;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.api.researches.Research;
-import io.github.thebusybiscuit.slimefun4.core.attributes.Radioactivity;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.items.VanillaItem;
-import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.UnplaceableBlock;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItem;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
+import com.github.drakescraft_labs.slimefun4.api.researches.Research;
+import com.github.drakescraft_labs.slimefun4.core.attributes.Radioactivity;
+import com.github.drakescraft_labs.slimefun4.implementation.SlimefunItems;
+import com.github.drakescraft_labs.slimefun4.implementation.items.VanillaItem;
+import com.github.drakescraft_labs.slimefun4.implementation.items.blocks.UnplaceableBlock;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.items.CustomItemStack;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -55,9 +55,9 @@ public final class Setup {
         new SlimefunItem(Categories.RESOURCES, Items.BORAX, RecipeType.NULL, fillNulls(
             new CustomItemStack(
                 Material.STONE,
-                "&f石头掉落物",
+                "&fgotas de piedra",
                 "",
-                "&7该物品有几率在挖掘石头时掉落"
+                "&7Este objeto tiene la posibilidad de aparecer al extraer piedra."
             )
         )).register(addon);
         new SlimefunItem(Categories.RESOURCES, Items.BORON, RecipeType.SMELTERY, fillNulls(Items.BORAX)).register(addon);
@@ -416,11 +416,11 @@ public final class Setup {
     }
 
     static void setupResearches() {
-        addResearch("Weapons of Mass Destruction", "大型破坏性武器", 70, Items.NUCLEAR_BOMB, Items.BOOMINATOR_9000);
-        addResearch("I am Iron Man", "我就是钢铁侠!", 70, Items.POWER_SUIT_HELMET, Items.POWER_SUIT_CHESTPLATE, Items.POWER_SUIT_LEGGINGS, Items.POWER_SUIT_BOOTS);
-        addResearch("Energy Weapons", "能量武器", 45, Items.ENERGY_BLADE, Items.ENERGY_RECTIFIER, Items.ENERGY_RIFLE);
-        addResearch("Alien Metals", "外星金属", 40, Items.OSMIUM_DUST, Items.OSMIUM_INGOT, Items.OSMIUM_SUPERALLOY);
-        addResearch("Rare Earths", "稀土元素", 50, Items.MONAZITE, Items.LANTHANUM_INGOT, Items.NEODYMIUM_INGOT, Items.GADOLINIUM_INGOT, Items.TERBIUM_INGOT);
+        addResearch("Weapons of Mass Destruction", "grandes armas destructivas", 70, Items.NUCLEAR_BOMB, Items.BOOMINATOR_9000);
+        addResearch("I am Iron Man", "soy el hombre de hierro!", 70, Items.POWER_SUIT_HELMET, Items.POWER_SUIT_CHESTPLATE, Items.POWER_SUIT_LEGGINGS, Items.POWER_SUIT_BOOTS);
+        addResearch("Energy Weapons", "armas de energía", 45, Items.ENERGY_BLADE, Items.ENERGY_RECTIFIER, Items.ENERGY_RIFLE);
+        addResearch("Alien Metals", "metal alienígena", 40, Items.OSMIUM_DUST, Items.OSMIUM_INGOT, Items.OSMIUM_SUPERALLOY);
+        addResearch("Rare Earths", "elementos de tierras raras", 50, Items.MONAZITE, Items.LANTHANUM_INGOT, Items.NEODYMIUM_INGOT, Items.GADOLINIUM_INGOT, Items.TERBIUM_INGOT);
     }
 
     private static void addResearch(String id, String name, int xp, SlimefunItemStack... items) {

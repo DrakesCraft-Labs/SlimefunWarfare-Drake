@@ -10,15 +10,15 @@ public class ArmorPieceUtil {
     public static @Nonnull String getName(@Nonnull ArmorPiece piece){
         switch (piece) {
             case HEAD:
-                return "头盔";
+                return "casco";
             case CHEST:
-                return "胸甲";
+                return "Coraza";
             case LEGS:
-                return "护腿";
+                return "Polainas";
             case FEET:
-                return "靴子";
+                return "botas";
             default:
-                return "未知";
+                return "desconocido";
         }
     }
 }

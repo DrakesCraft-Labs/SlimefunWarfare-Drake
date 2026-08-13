@@ -2,15 +2,15 @@ package io.github.seggan.slimefunwarfare.items.powersuits;
 
 import io.github.mooy1.infinitylib.common.Scheduler;
 import io.github.seggan.slimefunwarfare.SlimefunWarfare;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
-import io.github.thebusybiscuit.slimefun4.libraries.paperlib.PaperLib;
-import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
+import com.github.drakescraft_labs.slimefun4.api.items.ItemGroup;
+import com.github.drakescraft_labs.slimefun4.api.items.SlimefunItemStack;
+import com.github.drakescraft_labs.slimefun4.api.recipes.RecipeType;
+import com.github.drakescraft_labs.slimefun4.core.multiblocks.MultiBlockMachine;
+import com.github.drakescraft_labs.slimefun4.implementation.Slimefun;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.items.CustomItemStack;
+import com.github.drakescraft_labs.slimefun4.libraries.dough.items.ItemUtils;
+import com.github.drakescraft_labs.slimefun4.libraries.paperlib.PaperLib;
+import com.github.drakescraft_labs.slimefun4.utils.SlimefunUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -39,9 +39,9 @@ public class ElementForge extends MultiBlockMachine {
 
     public ElementForge(ItemGroup category, SlimefunItemStack item) {
         super(category, item, new ItemStack[]{
-            getCorner(), new CustomItemStack(Material.PISTON, "&f活塞 &7(朝下)"), getCorner(),
+            getCorner(), new CustomItemStack(Material.PISTON, "&fpistón &7(boca abajo)"), getCorner(),
             new ItemStack(Material.NETHER_BRICK_WALL), null, new ItemStack(Material.NETHER_BRICK_WALL),
-            new CustomItemStack(Material.HOPPER, "&f漏斗 &7(朝下)"), new ItemStack(Material.SMITHING_TABLE),
+            new CustomItemStack(Material.HOPPER, "&fembudo &7(boca abajo)"), new ItemStack(Material.SMITHING_TABLE),
             new ItemStack(Material.DISPENSER)
         }, BlockFace.UP);
     }
@@ -61,7 +61,7 @@ public class ElementForge extends MultiBlockMachine {
         Block piston = b.getRelative(0, 2, 0);
 
         if (dispenser == null) {
-            p.sendMessage(ChatColor.RED + "无法找到发射器的位置!");
+            p.sendMessage(ChatColor.RED + "No se puede encontrar la ubicación del transmisor!");
             return;
         }
 

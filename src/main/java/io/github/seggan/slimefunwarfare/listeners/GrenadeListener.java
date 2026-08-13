@@ -1,5 +1,6 @@
 package io.github.seggan.slimefunwarfare.listeners;
 
+import io.github.seggan.slimefunwarfare.SlimefunWarfare;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.AreaEffectCloud;
@@ -8,6 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.AreaEffectCloudApplyEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.potion.PotionEffect;
@@ -43,14 +45,24 @@ public class GrenadeListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onCloudApply(AreaEffectCloudApplyEvent e) {
+        if (!(e.getEntity().getSource() instanceof org.bukkit.entity.Player source)) return;
+        e.getAffectedEntities().removeIf(target -> !SlimefunWarfare.inst().guard().canAttack(source, target));
+    }
+
     private void applyEffect(Entity snowball, Location loc) {
+        if (!SlimefunWarfare.inst().guard().isAllowed(loc)) return;
         String id = snowball.getMetadata("effect").get(0).asString();
+        org.bukkit.entity.Player source = snowball instanceof Projectile projectile
+            && projectile.getShooter() instanceof org.bukkit.entity.Player player ? player : null;
         AreaEffectCloud cloud;
         switch (id) {
             case "NITROGEN_TRIIODIDE":
-                snowball.getWorld().createExplosion(loc, 3F, false, false);
+                snowball.getWorld().createExplosion(loc, 3F, false, false, source);
                 cloud = (AreaEffectCloud) snowball.getWorld()
                     .spawnEntity(loc, EntityType.AREA_EFFECT_CLOUD);
+                cloud.setSource(source);
                 cloud.addCustomEffect(new PotionEffect(
                     PotionEffectType.BLINDNESS,
                     100,
@@ -63,19 +75,20 @@ public class GrenadeListener implements Listener {
                 cloud.setRadius(4);
                 break;
             case "AZIDOAZIDE_AZIDE":
-                snowball.getWorld().createExplosion(loc, 7F);
+                snowball.getWorld().createExplosion(loc, 7F, false, false, source);
                 break;
             case "ARSENIC":
-                snowball.getWorld().createExplosion(loc, 1F, false, false);
+                snowball.getWorld().createExplosion(loc, 1F, false, false, source);
                 cloud = (AreaEffectCloud) snowball.getWorld()
                     .spawnEntity(loc, EntityType.AREA_EFFECT_CLOUD);
+                cloud.setSource(source);
                 cloud.addCustomEffect(new PotionEffect(
                     PotionEffectType.WITHER,
                     500,
                     1
                 ), true);
                 cloud.addCustomEffect(new PotionEffect(
-                    PotionEffectType.CONFUSION,
+                    PotionEffectType.NAUSEA,
                     500,
                     2
                 ), true);
@@ -86,14 +99,15 @@ public class GrenadeListener implements Listener {
                 cloud.setRadius(4);
                 break;
             case "PYRO_POWDER":
-                snowball.getWorld().createExplosion(loc, 4F);
+                snowball.getWorld().createExplosion(loc, 4F, false, false, source);
                 break;
             case "THIOACETONE":
-                snowball.getWorld().createExplosion(loc, 1F, false, false);
+                snowball.getWorld().createExplosion(loc, 1F, false, false, source);
                 cloud = (AreaEffectCloud) snowball.getWorld()
                     .spawnEntity(loc, EntityType.AREA_EFFECT_CLOUD);
+                cloud.setSource(source);
                 cloud.addCustomEffect(new PotionEffect(
-                    PotionEffectType.CONFUSION,
+                    PotionEffectType.NAUSEA,
                     1200,
                     9
                 ), true);
@@ -104,11 +118,12 @@ public class GrenadeListener implements Listener {
                 cloud.setRadius(10);
                 break;
             case "OSMIUM_DUST":
-                snowball.getWorld().createExplosion(loc, 1F, false, false);
+                snowball.getWorld().createExplosion(loc, 1F, false, false, source);
                 cloud = (AreaEffectCloud) snowball.getWorld()
                     .spawnEntity(loc, EntityType.AREA_EFFECT_CLOUD);
+                cloud.setSource(source);
                 cloud.addCustomEffect(new PotionEffect(
-                    PotionEffectType.CONFUSION,
+                    PotionEffectType.NAUSEA,
                     60 * 20,
                     9
                 ), true);
