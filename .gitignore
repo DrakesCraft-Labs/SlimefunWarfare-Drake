@@ -5,3 +5,6 @@ cache
 .idea
 SlimefunWarfare.iml
 dependency-reduced-pom.xml
+target/
+build/
+.gradle/
