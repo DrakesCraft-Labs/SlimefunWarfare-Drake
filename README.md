@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/DrakesCraft-Labs/SlimefunWarfare/main/banner.svg" alt="SlimefunWarfare banner" width="100%"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/DrakesCraft-Labs/SlimefunWarfare-Drake/main/banner.svg" alt="SlimefunWarfare banner" width="100%"></p>
 
 # SlimefunWarfare for DrakesCraft
 
